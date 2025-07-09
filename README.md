@@ -35,7 +35,7 @@ A beginner-friendly guide to setting up COBOL on macOS, understanding its struct
 Compile and run a COBOL program:
 
 ```bash
-cobc -x -free user_input.cbl
+cobc -x user_input.cbl
 ./user_input
 ```
 
