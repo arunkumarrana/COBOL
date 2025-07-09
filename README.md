@@ -53,10 +53,6 @@ COBOL follows a strict column-based layout:
 | Area B       | 12–72       | Executable statements and declarations       |
 | Ignored Area | 73+         | Compiler ignores content                     |
 
-# COBOL Program Structure
-
-This document explains the four main divisions of a COBOL program, along with a basic example to illustrate how each part is structured.
-
 ---
 
 ## 📌 1. Identification Division
