@@ -1,7 +1,4 @@
 # COBOL
-cobol practice
-
-
 Cobol Learning
 Install:
 1. /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -13,8 +10,8 @@ Run:
 cobc -x -free user_input.cbl
 ./user_input
 
-==================================================================================================================================================================
-
+==================================================================================================================================================
+Blank Space:
 Area A (8-11): Structure (divisions, sections, level numbers).
 Area B (12-72): Detailed code (variables, logic).
 Column 7: Controls line type (comment, debug, continuation).
@@ -68,7 +65,7 @@ Example:
            MOVE 25     TO USER-AGE
            DISPLAY USER-NAME ", " USER-AGE.
 
-==================================================================================================================================================================
+===================================================================================================================================================
 Use of level numbers:
 In COBOL, the level numbers (like 01, 05, 10, etc.) serve critical purposes in defining the hierarchy, grouping, and accessibility of data fields.
 01 = Root level (file records, major groups)
@@ -88,7 +85,7 @@ In COBOL, the level numbers (like 01, 05, 10, etc.) serve critical purposes in d
     66  DISCOUNT-FIELDS RENAMES ITEM-PRICE(1) THRU ITEM-PRICE(3).
     88  HAS-DISCOUNT     VALUE 'Y' 'N'. *> Condition
 
-==================================================================================================================================================================
+===================================================================================================================================================
 Data Type:
 Data Type	    PIC Clause	Example	            Use Case
 Integer	        9(n)	    PIC 9(5)	        IDs, counters
@@ -113,7 +110,7 @@ WORKING-STORAGE SECTION.
     05  TAX          PIC $$,$$9.99.          *> Edited (e.g., "$1,000.00")
 77  COUNTER          PIC 9(3) COMP.          *> Binary counter
 
-==================================================================================================================================================================
+===================================================================================================================================================
 Code reusability : In COBOL, code reusability is achieved through subroutines (PERFORM), copybooks (COPY statement), and subprograms (CALL statement). Let’s explore each method with examples.
 Execution: 
 cobc -x SALES-CALCULATOR.cbl
@@ -125,4 +122,4 @@ cobc -x SALES-CALCULATOR2.cbl
 cobc -x SALES-CALCULATOR3.cbl
 cobc -m DISCOUNT-SUB.cbl
 ./SALES-CALCULATOR3
-==================================================================================================================================================================
+===================================================================================================================================================
