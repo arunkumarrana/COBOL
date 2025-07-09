@@ -53,6 +53,129 @@ COBOL follows a strict column-based layout:
 | Area B       | 12–72       | Executable statements and declarations       |
 | Ignored Area | 73+         | Compiler ignores content                     |
 
+# COBOL Program Structure
+
+This document explains the four main divisions of a COBOL program, along with a basic example to illustrate how each part is structured.
+
+---
+
+## 📌 1. Identification Division
+
+The **Identification Division** is mandatory in every COBOL program. It is used to identify the program to the compiler.
+
+```cobol
+IDENTIFICATION DIVISION.
+PROGRAM-ID. HelloWorld.
+```
+
+---
+
+## 🖥️ 2. Environment Division
+
+Describes the system and I/O setup. It has two main sections:
+
+### Configuration Section
+
+Specifies hardware and software environment.
+
+### Input-Output Section
+
+Describes the files the program will use.
+
+```cobol
+ENVIRONMENT DIVISION.
+CONFIGURATION SECTION.
+    SOURCE-COMPUTER. IBM-Z15.
+    OBJECT-COMPUTER. IBM-Z15.
+
+INPUT-OUTPUT SECTION.
+    FILE-CONTROL.
+        SELECT EMP-FILE ASSIGN TO 'EMP.DAT'.
+```
+
+---
+
+## 📦 3. Data Division
+
+Defines all data used in the program. It consists of four sections:
+
+### File Section
+
+```cobol
+DATA DIVISION.
+FILE SECTION.
+FD  EMP-FILE.
+01  EMP-RECORD.
+    05 EMP-ID        PIC 9(5).
+    05 EMP-NAME      PIC A(20).
+```
+
+### Working-Storage Section
+
+```cobol
+WORKING-STORAGE SECTION.
+01 WS-MESSAGE       PIC A(50) VALUE 'Hello, COBOL World!'.
+01 WS-COUNTER       PIC 9(3) VALUE 0.
+```
+
+### Local-Storage Section
+
+```cobol
+LOCAL-STORAGE SECTION.
+01 LS-TEMP-VAR      PIC 9(3).
+```
+
+### Linkage Section
+
+Used when the program receives parameters from another program.
+
+```cobol
+LINKAGE SECTION.
+01 LK-IN-VALUE      PIC 9(5).
+```
+
+---
+
+## 🔁 4. Procedure Division
+
+Contains the actual executable logic of the COBOL program.
+
+```cobol
+PROCEDURE DIVISION.
+MAIN-LOGIC.
+    DISPLAY WS-MESSAGE.
+    ADD 1 TO WS-COUNTER.
+    DISPLAY 'Counter: ' WS-COUNTER.
+    STOP RUN.
+```
+
+---
+
+## 🧪 Complete COBOL Program Example
+
+```cobol
+IDENTIFICATION DIVISION.
+PROGRAM-ID. HelloWorld.
+
+ENVIRONMENT DIVISION.
+CONFIGURATION SECTION.
+    SOURCE-COMPUTER. IBM-Z15.
+    OBJECT-COMPUTER. IBM-Z15.
+
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01 WS-MESSAGE       PIC A(50) VALUE 'Hello, COBOL World!'.
+01 WS-COUNTER       PIC 9(3) VALUE 0.
+
+PROCEDURE DIVISION.
+MAIN-LOGIC.
+    DISPLAY WS-MESSAGE.
+    ADD 1 TO WS-COUNTER.
+    DISPLAY 'Counter: ' WS-COUNTER.
+    STOP RUN.
+```
+
+
 ### Example:
 
 ```cobol
