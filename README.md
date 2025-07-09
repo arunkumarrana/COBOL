@@ -58,16 +58,16 @@ COBOL follows a strict column-based layout:
 ```cobol
 000100 IDENTIFICATION DIVISION.
 000200 PROGRAM-ID. SAMPLE.
-        DATA DIVISION.
-        WORKING-STORAGE SECTION.
-        01  USER-DATA.
-            05 USER-NAME PIC X(20).
-            05 USER-AGE  PIC 9(3).
-        PROCEDURE DIVISION.
-        MAIN.
-            MOVE "ALICE" TO USER-NAME
-            MOVE 25 TO USER-AGE
-            DISPLAY USER-NAME ", " USER-AGE.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  USER-DATA.
+           05 USER-NAME PIC X(20).
+           05 USER-AGE  PIC 9(3).
+       PROCEDURE DIVISION.
+       MAIN.
+           MOVE "ALICE" TO USER-NAME
+           MOVE 25 TO USER-AGE
+           DISPLAY USER-NAME ", " USER-AGE.
 ```
 
 ---
