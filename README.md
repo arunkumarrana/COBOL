@@ -1,117 +1,161 @@
-# COBOL Learning Guide
+# COBOL Learning
 
-![COBOL Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Cobol_logo.svg/1200px-Cobol_logo.svg.png)
+A beginner-friendly guide to setting up COBOL on macOS, understanding its structure, and running basic COBOL programs. This repo includes examples and references to key COBOL concepts such as divisions, data types, level numbers, and code reuse.
 
-A comprehensive guide to getting started with COBOL programming, including installation, basic syntax, and practical examples.
+---
 
-## Table of Contents
-1. [Installation](#installation)
-2. [Running Programs](#running-programs)
-3. [Basic Syntax](#basic-syntax)
-4. [Data Types](#data-types)
-5. [Code Structure](#code-structure)
-6. [Example Program](#example-program)
-7. [Resources](#resources)
+## 🛠 Installation (macOS)
 
-## Installation <a name="installation"></a>
+1. **Install Homebrew**:
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
 
-### macOS/Linux
+2. **Add Homebrew to your shell**:
+   ```bash
+   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+   source ~/.zshrc
+   ```
+
+3. **Install GNU COBOL**:
+   ```bash
+   brew install gnu-cobol
+   ```
+
+4. **Verify Installation**:
+   ```bash
+   brew --version
+   cobc --version
+   ```
+
+---
+
+## ▶️ Running COBOL Code
+
+Compile and run a COBOL program:
+
 ```bash
-# Install Homebrew (if not installed)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+cobc -x -free user_input.cbl
+./user_input
+```
 
-# Add Homebrew to PATH
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
-source ~/.zshrc
+---
 
-# Install GNU COBOL
-brew install gnu-cobol
+## 🧱 COBOL Code Structure
 
-# Verify installation
-cobc --version
+COBOL follows a strict column-based layout:
 
-Running Programs <a name="running-programs"></a>
-bash
-# Compile a program
-cobc -x -free program.cbl
+| Area         | Columns     | Purpose                                      |
+|--------------|-------------|----------------------------------------------|
+| Sequence     | 1–6         | Optional line numbers                        |
+| Indicator    | 7           | `*`, `/`, or space – for comments or code    |
+| Area A       | 8–11        | Divisions, section names, level numbers      |
+| Area B       | 12–72       | Executable statements and declarations       |
+| Ignored Area | 73+         | Compiler ignores content                     |
 
-# Run the compiled program
-./program
-Basic Syntax <a name="basic-syntax"></a>
-Divisions
-cobol
-IDENTIFICATION DIVISION.
-PROGRAM-ID. HELLO-WORLD.
+### Example:
 
-DATA DIVISION.
-WORKING-STORAGE SECTION.
-01 GREETING PIC X(20) VALUE "Hello, World!".
+```cobol
+000100 IDENTIFICATION DIVISION.
+000200 PROGRAM-ID. SAMPLE.
+        DATA DIVISION.
+        WORKING-STORAGE SECTION.
+        01  USER-DATA.
+            05 USER-NAME PIC X(20).
+            05 USER-AGE  PIC 9(3).
+        PROCEDURE DIVISION.
+        MAIN.
+            MOVE "ALICE" TO USER-NAME
+            MOVE 25 TO USER-AGE
+            DISPLAY USER-NAME ", " USER-AGE.
+```
 
-PROCEDURE DIVISION.
-MAIN.
-    DISPLAY GREETING
-    STOP RUN.
-Column Rules
-Columns 1-6: Line numbers (optional)
+---
 
-Column 7: Comment indicator (*)
+## 🔢 Use of Level Numbers
 
-Columns 8-11 (Area A): Division/section headers
+Level numbers define the data hierarchy:
 
-Columns 12-72 (Area B): Program code
+- `01` – Top-level data items
+- `02–49` – Nested/grouped items
+- `66` – Field renaming
+- `77` – Standalone variables
+- `88` – Conditional/Boolean fields
 
-Columns 73+: Ignored
+### Example:
 
-Data Types <a name="data-types"></a>
-Type	Format	Example
-Integer	9(n)	PIC 9(5)
-Decimal	9(n)V9(m)	PIC 9(3)V99
-Text	X(n)	PIC X(30)
-Boolean	88 level	88 IS-VALID VALUE 'Y'
-Date	9(8)	PIC 9(8) (YYYYMMDD)
-Code Structure <a name="code-structure"></a>
-cobol
-IDENTIFICATION DIVISION.
-PROGRAM-ID. SAMPLE.
+```cobol
+01 INVOICE-RECORD.
+    05 INVOICE-NUMBER PIC 9(10).
+    05 CUSTOMER-INFO.
+        10 CUST-ID    PIC 9(5).
+        10 CUST-NAME  PIC X(30).
+    05 LINE-ITEMS OCCURS 5 TIMES.
+        10 ITEM-CODE  PIC X(10).
+        10 ITEM-PRICE PIC 9(5)V99.
+77 TAX-RATE PIC V999 VALUE 0.08.
+66 DISCOUNT-FIELDS RENAMES ITEM-PRICE(1) THRU ITEM-PRICE(3).
+88 HAS-DISCOUNT VALUE 'Y' 'N'.
+```
 
-ENVIRONMENT DIVISION.
-CONFIGURATION SECTION.
+---
 
-DATA DIVISION.
-WORKING-STORAGE SECTION.
-01 CUSTOMER-RECORD.
-   05 CUST-ID    PIC 9(5).
-   05 CUST-NAME  PIC X(30).
-   05 BALANCE    PIC 9(5)V99.
+## 🧬 Data Types in COBOL
 
-PROCEDURE DIVISION.
-MAIN.
-   MOVE 12345 TO CUST-ID
-   MOVE "JOHN DOE" TO CUST-NAME
-   MOVE 100.50 TO BALANCE
-   DISPLAY "Customer: " CUST-NAME " Balance: " BALANCE
-   STOP RUN.
-Example Program <a name="example-program"></a>
-Save this as hello.cbl:
+| Type         | PIC Clause       | Example             | Use Case              |
+|--------------|------------------|---------------------|------------------------|
+| Integer      | `9(n)`           | `PIC 9(5)`          | IDs, counters          |
+| Signed Int   | `S9(n)`          | `PIC S9(4)`         | Allow negatives        |
+| Decimal      | `9(n)V9(m)`      | `PIC 9(3)V99`       | Currency, rates        |
+| Alphanumeric | `X(n)`           | `PIC X(20)`         | Names, addresses       |
+| Boolean      | `88` + `PIC X`   | `88 ACTIVE 'Y'`     | Flags/conditions       |
+| Edited       | Format + picture | `PIC $$,$$9.99`     | Human-readable output  |
+| Binary       | `COMP`           | `PIC 9(4) COMP`     | Optimized for storage  |
 
-cobol
-       IDENTIFICATION DIVISION.
-       PROGRAM-ID. HELLO.
+---
 
-       DATA DIVISION.
-       WORKING-STORAGE SECTION.
-       01 USER-NAME PIC X(20).
-       01 GREETING PIC X(30) VALUE "Hello, ".
+## 🔁 Code Reusability in COBOL
 
-       PROCEDURE DIVISION.
-       MAIN.
-           DISPLAY "Enter your name: " WITH NO ADVANCING
-           ACCEPT USER-NAME
-           DISPLAY GREETING USER-NAME
-           STOP RUN.
-Compile and run:
+COBOL encourages modular code through:
 
-bash
-cobc -x hello.cbl
-./hello
-Resources <a name="resources"></a>
+- **PERFORM** – Subroutines
+- **COPY** – Copybooks (reusable blocks)
+- **CALL** – External subprograms
+
+### Example Execution:
+
+```bash
+cobc -x SALES-CALCULATOR.cbl
+./SALES-CALCULATOR
+
+cobc -x SALES-CALCULATOR2.cbl
+./SALES-CALCULATOR2
+
+cobc -x SALES-CALCULATOR3.cbl
+cobc -m DISCOUNT-SUB.cbl
+./SALES-CALCULATOR3
+```
+
+---
+
+## 📁 Files in this Project
+
+| File                    | Purpose                          |
+|-------------------------|----------------------------------|
+| `user_input.cbl`        | Basic program with input/output  |
+| `SALES-CALCULATOR*.cbl` | Examples for reusability         |
+| `DISCOUNT-SUB.cbl`      | Subprogram module                |
+
+---
+
+## 📚 Resources
+
+- [GNU COBOL Manual](https://open-cobol.sourceforge.io/)
+- [COBOL Column Rules – IBM Docs](https://www.ibm.com/docs/)
+- [COBOL Programming Tutorial](https://www.tutorialspoint.com/cobol/)
+
+---
+
+## ✅ License
+
+This project is for learning purposes and distributed freely for educational use.
